@@ -2,11 +2,8 @@ extends "res://singletons/item_service.gd"
 
 var _RNG = RandomNumberGenerator.new()
 
-
-func _get_rand_item_for_wave(wave:int, player_index:int, type:int, rand_item_args) -> ItemParentData:
-	
-
-	var _new_item = ._get_rand_item_for_wave(wave, player_index, type, rand_item_args)
+func get_rand_item_for_wave(wave:int, type:int, excluded_items:Array = [], owned_items:Array = [], fixed_tier:int = -1) -> ItemParentData:
+	var _new_item = .get_rand_item_for_wave(wave, type, excluded_items, owned_items, fixed_tier)
 	
 	# Handle logic for item replacement
 	if _new_item != null:
