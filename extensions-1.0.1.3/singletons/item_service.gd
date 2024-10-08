@@ -4,7 +4,7 @@ var _RNG = RandomNumberGenerator.new()
 
 func get_rand_item_for_wave(wave:int, type:int, excluded_items:Array = [], owned_items:Array = [], fixed_tier:int = -1) -> ItemParentData:
 	var _new_item = .get_rand_item_for_wave(wave, type, excluded_items, owned_items, fixed_tier)
-	
+
 	# Handle logic for item replacement
 	if _new_item != null:
 		return handle_legendary_weapon_replacement(type, _new_item)
@@ -17,7 +17,7 @@ func get_rand_item_for_wave(wave:int, type:int, excluded_items:Array = [], owned
 
 # Helper function to handle legendary weapon replacement logic
 func handle_legendary_weapon_replacement(type:int, _new_item:ItemParentData) -> ItemParentData:
-	if type == TierData.WEAPONS and (_new_item.tier == Tier.LEGENDARY or true):
+	if type == TierData.WEAPONS and _new_item.tier == Tier.LEGENDARY:
 		# Do not replace an already legendary weapon by a random one
 		if hasLegendaryClass(_new_item):
 			return _new_item
