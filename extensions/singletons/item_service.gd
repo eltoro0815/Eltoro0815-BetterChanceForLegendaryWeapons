@@ -4,12 +4,20 @@ var _RNG = RandomNumberGenerator.new()
 
 # Helper function to get the legendary weapon chance from mod configuration
 func get_legendary_weapon_chance() -> float:
+	# Try ModLoader config first (permanent storage)
+	if ModLoaderStore.mod_data.has("Eltoro0815-BetterChanceForLegendaryWeapons"):
+		var mod_data = ModLoaderStore.mod_data["Eltoro0815-BetterChanceForLegendaryWeapons"]
+		if mod_data.current_config and mod_data.current_config.data.has("LEGENDARY_WEAPON_CHANCE"):
+			return mod_data.current_config.data["LEGENDARY_WEAPON_CHANCE"]
+	
+	# Fallback to ModOptions (temporary)
 	var ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
 	if is_instance_valid(ModsConfigInterface):
 		var settings = ModsConfigInterface.get_settings("Eltoro0815-BetterChanceForLegendaryWeapons")
 		if settings.has("LEGENDARY_WEAPON_CHANCE"):
 			return settings["LEGENDARY_WEAPON_CHANCE"]
-	# Fallback to default value if ModOptions is not available
+	
+	# Final fallback to default value
 	return 0.5
 
 
