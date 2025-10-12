@@ -2,6 +2,16 @@ extends "res://singletons/item_service.gd"
 
 var _RNG = RandomNumberGenerator.new()
 
+# Helper function to get the legendary weapon chance from mod configuration
+func get_legendary_weapon_chance() -> float:
+	var ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
+	if is_instance_valid(ModsConfigInterface):
+		var settings = ModsConfigInterface.get_settings("Eltoro0815-BetterChanceForLegendaryWeapons")
+		if settings.has("LEGENDARY_WEAPON_CHANCE"):
+			return settings["LEGENDARY_WEAPON_CHANCE"]
+	# Fallback to default value if ModOptions is not available
+	return 0.5
+
 func get_rand_item_for_wave(wave:int, type:int, excluded_items:Array = [], owned_items:Array = [], fixed_tier:int = -1) -> ItemParentData:
 	var _new_item = .get_rand_item_for_wave(wave, type, excluded_items, owned_items, fixed_tier)
 
@@ -22,24 +32,24 @@ func handle_legendary_weapon_replacement(type:int, _new_item:ItemParentData) -> 
 		if hasLegendaryClass(_new_item):
 			return _new_item
 
-		var chance_change_to_legendary_weapon = 0.50
+		var chance_change_to_legendary_weapon = get_legendary_weapon_chance()
 		var rand_chance_change_to_legendary_weapon = randf()
 
 		if rand_chance_change_to_legendary_weapon <= chance_change_to_legendary_weapon:
-			var legendary_weapons = getAllLegendaryWeapons()
+			var legendary_weapons = getAllLegendaryWeaponsFilteredByType(type)
 			_RNG.randomize()
 			var rand_index = _RNG.randi_range(0, legendary_weapons.size() - 1)
 			return legendary_weapons[rand_index]
 
 	return _new_item  # Return the item if no replacement occurred
 
-# Helper functions remain unchanged
-func getAllLegendaryWeapons() -> Array:
+func getAllLegendaryWeaponsFilteredByType(type:int) -> Array:
 	var weapon_pool = get_pool(Tier.LEGENDARY, TierData.WEAPONS)
 	var legendary_weapons = []
 	for weapon in weapon_pool:
 		if hasLegendaryClass(weapon):
-			legendary_weapons.append(weapon)
+			if weapon.type == type:
+				legendary_weapons.append(weapon)
 	return legendary_weapons
 
 func hasLegendaryClass(weapon) -> bool:

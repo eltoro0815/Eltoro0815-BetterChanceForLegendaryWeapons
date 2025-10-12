@@ -25,6 +25,9 @@ func _init(_modLoader = ModLoader):
 	
 	
 	ModLoaderMod.install_script_extension(ext_dir + "singletons/item_service.gd")
+	
+	# Install menu extension for mod options
+	ModLoaderMod.install_script_extension(ext_dir + "menus/pages/menu_choose_options.gd")
 
 
 func _ready(_modLoader = ModLoader):

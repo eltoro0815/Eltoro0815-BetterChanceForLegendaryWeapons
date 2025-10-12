@@ -1,10 +1,11 @@
 {
 	"name": "BetterChanceForLegendaryWeapons",
 	"namespace": "Eltoro0815",
-	"version_number": "1.1.0",
+	"version_number": "1.2.0",
 	"description": "Better Chance for Legendary Weapons",
 	"website_url": "",
 	"dependencies": [],
+	"optional_dependencies": ["dami-ModOptions"],
 	"extra": {
 		"godot": {
 			"load_before": [],
@@ -14,7 +15,22 @@
 				"Eltoro0815"
 			],
 			"compatible_mod_loader_version": ["6.2.0"],
-			"compatible_game_version": ["1.0.1.3", "1.1.0.0.beta-9","1.1.0.0-beta-dlc.42d"]
+			"compatible_game_version": ["1.0.1.3", "1.1.0.0.beta-9","1.1.0.0-beta-dlc.42d"],
+			"config_schema": {
+				"title": "BetterChanceForLegendaryWeapons-Config",
+				"description": "Konfiguration für bessere Chancen auf legendäre Waffen",
+				"type": "object",
+				"properties": {
+					"LEGENDARY_WEAPON_CHANCE": {
+						"type": "number",
+						"minimum": 0.0,
+						"maximum": 1.0,
+						"multipleOf": 0.01,
+						"default": 0.5,
+						"tooltip": "Wahrscheinlichkeit (0.0-1.0) dass eine rote Waffe zu einer legendären Waffe wird"
+					}
+				}
+			}
 		}
 	}
 }
