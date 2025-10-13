@@ -32,7 +32,7 @@ func _get_rand_item_for_wave(wave:int, player_index:int, type:int, rand_item_arg
 
 # Helper function to handle legendary weapon replacement logic
 func handle_legendary_weapon_replacement(type:int, _new_item:ItemParentData) -> ItemParentData:
-	if type == TierData.WEAPONS and _new_item.tier == Tier.LEGENDARY:
+	if type == TierData.WEAPONS:
 		# Do not replace an already legendary weapon by a random one
 		if hasLegendaryClass(_new_item):
 			return _new_item
@@ -41,7 +41,7 @@ func handle_legendary_weapon_replacement(type:int, _new_item:ItemParentData) -> 
 		var rand_chance_change_to_legendary_weapon = randf()
 
 		if rand_chance_change_to_legendary_weapon <= chance_change_to_legendary_weapon:
-			var legendary_weapons = getAllLegendaryWeaponsFilteredByType(type)
+			var legendary_weapons = getAllLegendaryWeaponsFilteredByWeaponType(_new_item)
 			
 			if legendary_weapons.size() > 0:
 				_RNG.randomize()
@@ -51,12 +51,12 @@ func handle_legendary_weapon_replacement(type:int, _new_item:ItemParentData) -> 
 	return _new_item  # Fallback
 
 
-func getAllLegendaryWeaponsFilteredByType(type:int) -> Array:
+func getAllLegendaryWeaponsFilteredByWeaponType(_new_item) -> Array:
 	var weapon_pool = get_pool(Tier.LEGENDARY, TierData.WEAPONS)
 	var legendary_weapons = []
 	for weapon in weapon_pool:
 		if hasLegendaryClass(weapon):
-			if weapon.type == type:
+			if weapon.type == _new_item.type:
 				legendary_weapons.append(weapon)
 	return legendary_weapons
 
