@@ -32,7 +32,7 @@ func _get_rand_item_for_wave(wave:int, player_index:int, type:int, rand_item_arg
 
 # Helper function to handle legendary weapon replacement logic
 func handle_legendary_weapon_replacement(type:int, _new_item:ItemParentData) -> ItemParentData:
-	if type == TierData.WEAPONS:
+	if type == TierData.WEAPONS and _new_item.tier == Tier.LEGENDARY:
 		# Do not replace an already legendary weapon by a random one
 		if hasLegendaryClass(_new_item):
 			return _new_item
